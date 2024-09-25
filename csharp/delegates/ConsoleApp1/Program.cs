@@ -1,25 +1,6 @@
-﻿// See https://aka.ms/new-console-template for more information
-/*
-Write the console applications "Wekker" for the use of delegates (and "Timer"):
-
-Provide a repetitive menu with which you 
-
-set the time when your alarm clock "runs off"
-can set the slumber time after your alarm clock has ended
-a "stop alarm" + snooze button
-enable or disable the different ways of arousing
-Provide for method of awakening at least
-
-sound
-a message
-a flashing light
-to be used separately or in combinations.  These may be written as "text" on the console.  But if "sound" or "flashing" can really be produced, that is of course an added value.
-
-An absolute condition: Except for the "menu" Switch, no conditional statements (if / else) may be used.  So you will have to work strictly with delegates and Timer
-*/
-
-
+﻿using System;
 using System.Globalization;
+using System.Threading;
 
 namespace Wekker
 {
@@ -42,39 +23,20 @@ namespace Wekker
             alarmTime = time;
             var timeSpan = alarmTime - DateTime.Now;
 
-
-
-
             if (timeSpan.TotalMilliseconds > 0)
             {
-                timer = new System.Timers.Timer(1000); // 1 second interval
-                timer.Elapsed += Timer_Elapsed;
-                timer.Start();
-
-
-
-                while (DateTime.Now < alarmTime)
+                while (DateTime.Now < alarmTime || IsRunning)
                 {
-
                     // Get Belgium Time Zone
                     TimeZoneInfo belgiumTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Romance Standard Time"); // UTC+1 
 
                     // Get the current Belgium time
                     DateTime currentBelgiumTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, belgiumTimeZone);
-                    Console.WriteLine($"Current Belgium Time: {currentBelgiumTime}");
 
                     // Display remaining time
                     timeSpan = alarmTime - currentBelgiumTime;
                     Console.WriteLine($"Remaining time: {timeSpan.Hours}h {timeSpan.Minutes}m {timeSpan.Seconds}s");
 
-                    // is Snoozed?
-                    if (IsSnoozed){
-                        Console.WriteLine("Snoozed");
-                        // Sleep until next snooze 10 seconds
-                        System.Threading.Thread.Sleep(10000);
-                        IsSnoozed = false;
-
-                    }
                     System.Threading.Thread.Sleep(1000); // wait 1 second
                 }
 
@@ -86,21 +48,23 @@ namespace Wekker
             }
         }
 
-        static void StartSnooze(){
-
+        static void StartSnooze()
+        {
             IsSnoozed = true;
-        }
-
-        static void StopSnooze(){
+            Console.WriteLine("Snoozed for 10 seconds...");
+            Thread.Sleep(10000); // wait 10 seconds
             IsSnoozed = false;
+            Console.WriteLine("Snooze ended.");
         }
 
-        static void Stop(){
+        static void Stop()
+        {
             IsRunning = false;
             IsStopped = true;
         }
 
-        static void Start(){
+        static void Start()
+        {
             IsRunning = true;
             IsStopped = false;
             IsSnoozed = false;
@@ -119,7 +83,7 @@ namespace Wekker
             DateTime alarmBelgiumTime = new DateTime(currentBelgiumTime.Year, currentBelgiumTime.Month, currentBelgiumTime.Day, 23, 59, 59);
 
             // alternative time conversion for Belgium
-           // alarmBelgiumTime.ToString("yyyy-MM-dd HH:mm:ss", new CultureInfo("nl-BE"));
+            // alarmBelgiumTime.ToString("yyyy-MM-dd HH:mm:ss", new CultureInfo("nl-BE"));
 
             // Check if it's past, if yes, move to the next day
             if (currentBelgiumTime > alarmBelgiumTime)
@@ -129,7 +93,47 @@ namespace Wekker
 
             Console.WriteLine($"Alarm Time: {alarmBelgiumTime}");
 
-            Countdown(alarmBelgiumTime);
+            do
+            {
+                Console.WriteLine("1. Show remaining time");
+                Console.WriteLine("2. Snooze");
+                Console.WriteLine("3. Stop");
+                Console.WriteLine("4. Exit");
+                string menu = Console.ReadLine();
+
+                switch (menu)
+                {
+                    case "1":
+                        if (IsSnoozed)
+                        {
+                            Console.WriteLine("Snoozed. Waiting for 10 seconds...");
+                        }
+                        else
+                        {
+                            // Get Belgium Time Zone
+                            TimeZoneInfo belgiumTimeZone2 = TimeZoneInfo.FindSystemTimeZoneById("Romance Standard Time"); // UTC+1 
+
+                            // Get the current Belgium time
+                            DateTime currentBelgiumTime2 = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, belgiumTimeZone2);
+
+                            // Display remaining time
+                            var timeSpan = alarmBelgiumTime - currentBelgiumTime2;
+                            Console.WriteLine($"Remaining time: {timeSpan.Hours}h {timeSpan.Minutes}m {timeSpan.Seconds}s");
+                        }
+                        break;
+                    case "2":
+                        StartSnooze();
+                        break;
+                    case "3":
+                        Stop();
+                        break;
+                    case "4":
+                        Environment.Exit(0);
+                        break;
+                    default:
+                        break;
+                }
+            } while (true);
         }
     }
 }
