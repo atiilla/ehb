@@ -19,6 +19,8 @@ An absolute condition: Except for the "menu" Switch, no conditional statements (
 */
 
 
+using System.Globalization;
+
 namespace Wekker
 {
     class Program
@@ -115,6 +117,9 @@ namespace Wekker
 
             // Set alarm time to 23:59:59 Belgium time
             DateTime alarmBelgiumTime = new DateTime(currentBelgiumTime.Year, currentBelgiumTime.Month, currentBelgiumTime.Day, 23, 59, 59);
+
+            // alternative time conversion for Belgium
+           // alarmBelgiumTime.ToString("yyyy-MM-dd HH:mm:ss", new CultureInfo("nl-BE"));
 
             // Check if it's past, if yes, move to the next day
             if (currentBelgiumTime > alarmBelgiumTime)
