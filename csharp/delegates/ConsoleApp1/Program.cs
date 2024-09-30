@@ -1,139 +1,204 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Threading;
 
-namespace Wekker
+namespace MyNamespace
 {
-    class Program
+    internal class Program
     {
-        static System.Timers.Timer timer;
-        public delegate void Alarm();
-        static bool IsRunning = false;
-        static bool IsStopped = false;
-        static bool IsSnoozed = false;
-        static DateTime alarmTime;
+        delegate void WakeUpMethod();
 
-        static void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            Console.WriteLine("Tick");
-        }
-
-        static void Countdown(DateTime time)
-        {
-            alarmTime = time;
-            var timeSpan = alarmTime - DateTime.Now;
-
-            if (timeSpan.TotalMilliseconds > 0)
-            {
-                while (DateTime.Now < alarmTime || IsRunning)
-                {
-                    // Get Belgium Time Zone
-                    TimeZoneInfo belgiumTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Romance Standard Time"); // UTC+1 
-
-                    // Get the current Belgium time
-                    DateTime currentBelgiumTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, belgiumTimeZone);
-
-                    // Display remaining time
-                    timeSpan = alarmTime - currentBelgiumTime;
-                    Console.WriteLine($"Remaining time: {timeSpan.Hours}h {timeSpan.Minutes}m {timeSpan.Seconds}s");
-
-                    System.Threading.Thread.Sleep(1000); // wait 1 second
-                }
-
-                Console.WriteLine("Alarm time has reached.");
-            }
-            else
-            {
-                Console.WriteLine("Alarm time has already passed.");
-            }
-        }
-
-        static void StartSnooze()
-        {
-            IsSnoozed = true;
-            Console.WriteLine("Snoozed for 10 seconds...");
-            Thread.Sleep(10000); // wait 10 seconds
-            IsSnoozed = false;
-            Console.WriteLine("Snooze ended.");
-        }
-
-        static void Stop()
-        {
-            IsRunning = false;
-            IsStopped = true;
-        }
-
-        static void Start()
-        {
-            IsRunning = true;
-            IsStopped = false;
-            IsSnoozed = false;
-        }
+        static Timer timer;
+        static TimeSpan alarmTime;
+        static TimeSpan snoozeDuration = TimeSpan.FromMinutes(5); // Default snooze
+        static bool isSnoozing = false;
+        static WakeUpMethod wakeUpMethods;
 
         static void Main(string[] args)
         {
-            // Get Belgium Time Zone
-            TimeZoneInfo belgiumTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Romance Standard Time"); // UTC+1 or UTC+2 depending on DST
+            bool running = true;
 
-            // Get the current Belgium time
-            DateTime currentBelgiumTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, belgiumTimeZone);
-            Console.WriteLine($"Current Belgium Time: {currentBelgiumTime}");
-
-            // Set alarm time to 23:59:59 Belgium time
-            DateTime alarmBelgiumTime = new DateTime(currentBelgiumTime.Year, currentBelgiumTime.Month, currentBelgiumTime.Day, 23, 59, 59);
-
-            // alternative time conversion for Belgium
-            // alarmBelgiumTime.ToString("yyyy-MM-dd HH:mm:ss", new CultureInfo("nl-BE"));
-
-            // Check if it's past, if yes, move to the next day
-            if (currentBelgiumTime > alarmBelgiumTime)
+            while (running)
             {
-                alarmBelgiumTime = alarmBelgiumTime.AddDays(1); // Next day
-            }
+                Console.Clear();
+                Console.WriteLine("Alarm Menu");
+                Console.WriteLine("1. Set alarm time");
+                Console.WriteLine("2. Set snooze time");
+                Console.WriteLine("3. Start Alarm Clock");
+                Console.WriteLine("4. Stop Alarm Clock");
+                Console.WriteLine("5. Select wake up methods (sound, message, blink)");
+                Console.WriteLine("0. Shut down");
+                Console.Write("Make a choice: ");
 
-            Console.WriteLine($"Alarm Time: {alarmBelgiumTime}");
-
-            do
-            {
-                Console.WriteLine("1. Show remaining time");
-                Console.WriteLine("2. Snooze");
-                Console.WriteLine("3. Stop");
-                Console.WriteLine("4. Exit");
-                string menu = Console.ReadLine();
-
-                switch (menu)
+                switch (Console.ReadLine())
                 {
                     case "1":
-                        if (IsSnoozed)
-                        {
-                            Console.WriteLine("Snoozed. Waiting for 10 seconds...");
-                        }
-                        else
-                        {
-                            // Get Belgium Time Zone
-                            TimeZoneInfo belgiumTimeZone2 = TimeZoneInfo.FindSystemTimeZoneById("Romance Standard Time"); // UTC+1 
-
-                            // Get the current Belgium time
-                            DateTime currentBelgiumTime2 = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, belgiumTimeZone2);
-
-                            // Display remaining time
-                            var timeSpan = alarmBelgiumTime - currentBelgiumTime2;
-                            Console.WriteLine($"Remaining time: {timeSpan.Hours}h {timeSpan.Minutes}m {timeSpan.Seconds}s");
-                        }
+                        SetAlarmTime();
                         break;
                     case "2":
-                        StartSnooze();
+                        SetSnoozeTime();
                         break;
                     case "3":
-                        Stop();
+                        StartAlarm();
                         break;
                     case "4":
-                        Environment.Exit(0);
+                        StopAlarm();
                         break;
-                    default:
+                    case "5":
+                        SelectWakeUpMethods();
+                        break;
+                    case "0":
+                        running = false;
+                        StopAlarm();
                         break;
                 }
-            } while (true);
+            }
+        }
+
+        private static void SetAlarmTime()
+        {
+            Console.Write("Enter alarm time (HH:mm): ");
+            string input = Console.ReadLine();
+            if (TimeSpan.TryParseExact(input, "hh\\:mm", CultureInfo.InvariantCulture, out TimeSpan setTime))
+            {
+                alarmTime = setTime;
+                Console.WriteLine($"Alarm time set for {alarmTime}");
+            }
+            else
+            {
+                Console.WriteLine("Invalid time format. Please use HH:mm.");
+            }
+
+            Console.WriteLine("Press any key to return to the menu.");
+            Console.ReadKey();
+        }
+
+        private static void SetSnoozeTime()
+        {
+            Console.Write("Enter snooze duration in minutes: ");
+            if (int.TryParse(Console.ReadLine(), out int minutes))
+            {
+                snoozeDuration = TimeSpan.FromMinutes(minutes);
+                Console.WriteLine($"Snooze duration set to {minutes} minutes.");
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Please enter a valid number of minutes.");
+            }
+
+            Console.WriteLine("Press any key to return to the menu.");
+            Console.ReadKey();
+        }
+
+        private static void StartAlarm()
+        {
+            if (alarmTime == default)
+            {
+                Console.WriteLine("Please set the alarm time first.");
+                Console.ReadKey();
+                return;
+            }
+
+            TimeSpan currentTime = DateTime.Now.TimeOfDay;
+            TimeSpan timeUntilAlarm = alarmTime - currentTime;
+            if (timeUntilAlarm < TimeSpan.Zero) 
+            {
+                timeUntilAlarm = timeUntilAlarm.Add(TimeSpan.FromDays(1));
+            }
+
+            Console.WriteLine($"Alarm set. Will go off in {timeUntilAlarm.TotalMinutes:F2} minutes.");
+            timer = new Timer(TriggerAlarm, null, timeUntilAlarm, TimeSpan.FromMilliseconds(-1)); 
+            Console.ReadKey();
+        }
+
+        private static void StopAlarm()
+        {
+            if (timer != null)
+            {
+                timer.Dispose();
+                Console.WriteLine("Alarm stopped.");
+            }
+            else
+            {
+                Console.WriteLine("No alarm is currently running.");
+            }
+
+            Console.WriteLine("Press any key to return to the menu.");
+            Console.ReadKey();
+        }
+
+        private static void TriggerAlarm(object state)
+        {
+            Console.Clear();
+            Console.WriteLine("ALARM! Time to wake up!");
+
+            wakeUpMethods?.Invoke(); 
+
+            if (isSnoozing)
+            {
+                timer = new Timer(TriggerAlarm, null, snoozeDuration, TimeSpan.FromMilliseconds(-1)); // Snooze timer
+                Console.WriteLine($"Snoozing for {snoozeDuration.TotalMinutes} minutes.");
+            }
+            else
+            {
+                StopAlarm();
+            }
+        }
+
+        private static void SelectWakeUpMethods()
+        {
+            wakeUpMethods = null; 
+            Console.WriteLine("Select wake-up methods (enter numbers separated by commas):");
+            Console.WriteLine("1. Sound");
+            Console.WriteLine("2. Message");
+            Console.WriteLine("3. Blinking text");
+
+            string[] choices = Console.ReadLine()?.Split(',');
+
+            foreach (string choice in choices)
+            {
+                switch (choice.Trim())
+                {
+                    case "1":
+                        wakeUpMethods += PlaySound;
+                        break;
+                    case "2":
+                        wakeUpMethods += ShowMessage;
+                        break;
+                    case "3":
+                        wakeUpMethods += BlinkText;
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice.");
+                        break;
+                }
+            }
+
+            Console.WriteLine("Wake-up methods set.");
+            Console.WriteLine("Press any key to return to the menu.");
+            Console.ReadKey();
+        }
+
+        private static void PlaySound()
+        {
+            Console.Beep(); 
+            Console.WriteLine("Playing alarm sound...");
+        }
+
+        private static void ShowMessage()
+        {
+            Console.WriteLine("Wake up! It's time to start your day.");
+        }
+
+        private static void BlinkText()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                Console.Clear();
+                Thread.Sleep(500); 
+                Console.WriteLine("ALARM!!!");
+                Thread.Sleep(500);
+            }
         }
     }
 }
