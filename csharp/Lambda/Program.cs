@@ -36,6 +36,18 @@
             {
                 Console.WriteLine(course);
             }
+
+            // querySyntax
+
+            var querySyntaxResult = from course in courses
+                                     where course.Category == "Programming"
+                                     orderby course.Name
+                                     select course;
+
+            foreach (Courses course in querySyntaxResult)
+            {
+                Console.WriteLine(course);
+            }
         }
 
 
