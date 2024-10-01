@@ -5,6 +5,10 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlarmApp", "AlarmApp\AlarmApp.csproj", "{AFA62782-AB99-46EC-863D-8605A9FEC710}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncProgramming", "AsyncProgramming\AsyncProgramming.csproj", "{0EA2EC13-4AD2-4EDE-9900-D56D626E93B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncExample", "AsyncExample\AsyncExample.csproj", "{CAF1F217-4F78-43E0-A4FB-CC941947432A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{AFA62782-AB99-46EC-863D-8605A9FEC710}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFA62782-AB99-46EC-863D-8605A9FEC710}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFA62782-AB99-46EC-863D-8605A9FEC710}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EA2EC13-4AD2-4EDE-9900-D56D626E93B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EA2EC13-4AD2-4EDE-9900-D56D626E93B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EA2EC13-4AD2-4EDE-9900-D56D626E93B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EA2EC13-4AD2-4EDE-9900-D56D626E93B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAF1F217-4F78-43E0-A4FB-CC941947432A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAF1F217-4F78-43E0-A4FB-CC941947432A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAF1F217-4F78-43E0-A4FB-CC941947432A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAF1F217-4F78-43E0-A4FB-CC941947432A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
