@@ -18,7 +18,7 @@ namespace MyNamespace
             try
             {
                 var stopDelay = new System.Diagnostics.Stopwatch();
-                stopDelay.Start();
+                stopDelay.Start();  
                 string jsonData = await FetchDataAsync(url);
                 stopDelay.Stop(); // Stop the timer
                 Console.WriteLine($"Response time: {stopDelay.ElapsedMilliseconds} ms");
