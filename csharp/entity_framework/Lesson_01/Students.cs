@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,11 @@ namespace Lesson_01
         public Gender Gender { get; set; }
         public string? Phone {  get; set; }
         public string? SchoolName  { get; set; }
+
+        [ForeignKey("Faculty")]
+        public int FacultyId { get; set; }
+        public virtual Faculty Faculty { get; set; }  // Make it virtual for EF lazy loading
+
 
         public override string ToString()
         {
