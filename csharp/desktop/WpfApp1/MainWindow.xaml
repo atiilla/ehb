@@ -11,10 +11,32 @@
             <ColumnDefinition Width="15*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="button1" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Height="32" Width="134" Click="Button_Click" Background="#FF373131" Foreground="White" FontSize="24" BorderBrush="{x:Null}" Margin="591,30,0,0"/>
+        <!--<Label Content="Label" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Background="#FFFAFAFA" FontSize="18"/>-->
+        <!--<Button x:Name="button1" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Height="32" Width="134" Click="Button_Click" Background="#FF373131" Foreground="White" FontSize="24" BorderBrush="{x:Null}" Margin="591,30,0,0"/>
         <Label x:Name="Label1" Content="Label" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" Background="Coral" Margin="682,100,0,0" FontSize="14"/>
         <TextBox x:Name="usernameInput" HorizontalAlignment="Left" Margin="24,30,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="562" Height="32" TextAlignment="Center" FontSize="14"/>
-        <WebBrowser x:Name="browser1" Margin="24,67,92,29" LoadCompleted="Browser_OnLoadCompleted"/>
+        <WebBrowser x:Name="browser1" Margin="24,67,92,29" LoadCompleted="Browser_OnLoadCompleted" />-->
+        <StackPanel Orientation="Horizontal">
+            <StackPanel>
+                <Label Content="Username" Background="white"/>
+                <Label Content="Username" Background="white"/>
+            </StackPanel>
+            <StackPanel>
+                <Label Content="Username" Background="white"/>
+                <Label Content="Username" Background="white"/>
+            </StackPanel>
+            <WrapPanel Orientation="Horizontal">
+                <StackPanel>
+                    <Label Content="Username" Background="white"/>
+                    <Label Content="Username" Background="white"/>
+                </StackPanel>
 
+            </WrapPanel>
+         
+            
+           
+
+        </StackPanel>
     </Grid>
+
 </Window>

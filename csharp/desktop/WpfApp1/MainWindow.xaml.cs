@@ -29,44 +29,44 @@ namespace WpfApp1
             //MainGrid.Children.Add(textBox);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            //MessageBox.Show("This is test Button");
-            //string username = usernameInput.Text;
-            //Label1.MaxWidth = 300;
+        //private void Button_Click(object sender, RoutedEventArgs e)
+        //{
+        //    //MessageBox.Show("This is test Button");
+        //    //string username = usernameInput.Text;
+        //    //Label1.MaxWidth = 300;
 
-            //Label1.Content = "Hello " + username;
+        //    //Label1.Content = "Hello " + username;
 
-            string url = usernameInput.Text;
-            string _url = URLFormatter(url);
-            browser1.Navigate(_url);
-        }
+        //    //string url = usernameInput.Text;
+        //    //string _url = URLFormatter(url);
+        //    //browser1.Navigate(_url);
+        //}
 
-        void Browser_OnLoadCompleted(object sender, NavigationEventArgs e)
-        {
-            var browser = sender as WebBrowser;
+        //void Browser_OnLoadCompleted(object sender, NavigationEventArgs e)
+        //{
+        //    var browser = sender as WebBrowser;
 
-            if (browser == null || browser.Document == null)
-                return;
+        //    if (browser == null || browser.Document == null)
+        //        return;
 
-            dynamic document = browser.Document;
+        //    dynamic document = browser.Document;
 
-            if (document.readyState != "complete")
-                return;
+        //    if (document.readyState != "complete")
+        //        return;
 
-            dynamic script = document.createElement("script");
-            script.type = @"text/javascript";
-            script.text = @"window.onerror = function(msg,url,line){return true;}";
-            document.head.appendChild(script);
-        }
+        //    dynamic script = document.createElement("script");
+        //    script.type = @"text/javascript";
+        //    script.text = @"window.onerror = function(msg,url,line){return true;}";
+        //    document.head.appendChild(script);
+        //}
 
-        public string URLFormatter(string url)
-        {
-            if (!url.StartsWith("http://") && !url.StartsWith("https://"))
-            {
-                url = "http://" + url;
-            }
-            return url;
-        }
+        //public string URLFormatter(string url)
+        //{
+        //    if (!url.StartsWith("http://") && !url.StartsWith("https://"))
+        //    {
+        //        url = "http://" + url;
+        //    }
+        //    return url;
+        //}
     }
 }
