@@ -24,11 +24,6 @@ namespace WpfApp2_controls
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            TextBox usernameInput = (TextBox)FindName("usernameInput");
-            TextBox passwordInput = (TextBox)FindName("passwordInput");
-            TextBox emailInput = (TextBox)FindName("emailInput");
-            TextBlock result = (TextBlock)FindName("result");
-
             string username = usernameInput.Text;
             string password = passwordInput.Text;
             string email = emailInput.Text;
@@ -58,5 +53,5 @@ namespace WpfApp2_controls
                 }
             }
         }
-    }
+}
 }
