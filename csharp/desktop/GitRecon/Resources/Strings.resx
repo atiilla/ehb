@@ -126,4 +126,10 @@
   <data name="Github" xml:space="preserve">
     <value>github.com/atiilla</value>
   </data>
+  <data name="TabMenu1" xml:space="preserve">
+    <value>Find email by Username</value>
+  </data>
+  <data name="TabMenu2" xml:space="preserve">
+    <value>Find username by Email</value>
+  </data>
 </root>

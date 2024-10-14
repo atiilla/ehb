@@ -86,5 +86,23 @@ namespace GitRecon.Resources {
                 return ResourceManager.GetString("Github", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find email by Username.
+        /// </summary>
+        public static string TabMenu1 {
+            get {
+                return ResourceManager.GetString("TabMenu1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find username by Email.
+        /// </summary>
+        public static string TabMenu2 {
+            get {
+                return ResourceManager.GetString("TabMenu2", resourceCulture);
+            }
+        }
     }
 }

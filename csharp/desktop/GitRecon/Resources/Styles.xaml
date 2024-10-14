@@ -5,4 +5,5 @@
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="FontSize" Value="20"/>
     </Style>
+    
 </ResourceDictionary>
