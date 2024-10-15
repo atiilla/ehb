@@ -25,6 +25,7 @@ namespace Group_Budget
             //dgPersons.ItemsSource = context.Persons.ToList();
             //dgPersons.ItemsSource = context.Persons.Where(p => p.Deleted > DateTime.Now).ToList();
             dgPersons.ItemsSource = (from p in context.Persons
+                                     where p.Deleted > DateTime.Now
                                      select new PersonDatagridViewModel(p)).ToList(); // Fix the LINQ query and add ToList()
 
             // columnWidth
@@ -81,6 +82,7 @@ namespace Group_Budget
             context.Persons.Add(newPerson);
             context.SaveChanges();
             dgPersons.ItemsSource = (from p in context.Persons
+                                     where p.Deleted > DateTime.Now
                                      select new PersonDatagridViewModel(p)).ToList();
             dgPersons.SelectedIndex = 0;
         }
@@ -96,6 +98,7 @@ namespace Group_Budget
                 updatePerson.LastName = txLastName.Text;
                 context.SaveChanges();
                 dgPersons.ItemsSource = (from p in context.Persons
+                                         where p.Deleted > DateTime.Now
                                          select new PersonDatagridViewModel(p)).ToList();
             }
         }
@@ -115,6 +118,7 @@ namespace Group_Budget
                     context.Persons.Update(person1);
                     context.SaveChanges();
                     dgPersons.ItemsSource = (from p in context.Persons
+                                             where p.Deleted > DateTime.Now
                                              select new PersonDatagridViewModel(p)).ToList();
                 }
             }
