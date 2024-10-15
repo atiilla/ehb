@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Group_Budget.Models.ViewModels;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -20,16 +21,10 @@ namespace Group_Budget
         {
             BudgetContext context = App.Context;
             InitializeComponent();
-            dgPersons.ItemsSource = context.Persons.ToList();
+            //dgPersons.ItemsSource = context.Persons.ToList();
             //dgPersons.ItemsSource = context.Persons.Where(p => p.Deleted > DateTime.Now).ToList();
-            //dgPersons.ItemsSource = (from p in context.Persons
-            //                         where p.Deleted > DateTime.Now
-            //                         select new
-            //                         {
-            //                             p.Name,
-            //                             p.FirstName,
-            //                             p.LastName
-            //                         }).ToList();
+            dgPersons.ItemsSource = (from p in context.Persons
+                                     select new PersonDatagridViewModel(p)).ToList(); // Fix the LINQ query and add ToList()
 
             // columnWidth
             //dgPersons.Width = context.Persons.Count() * 100; // 100 is the width of each column
@@ -43,6 +38,68 @@ namespace Group_Budget
             dgPersons.Columns[3].Width = 150;
 
             dgPersons.UpdateLayout();
+        }
+
+        private void dgPersons_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            PersonDatagridViewModel person = (PersonDatagridViewModel)dgPersons.CurrentItem;
+            if (person != null)
+            {
+                dgPersons.SelectedItem = person;
+                txId.Text = person.Id.ToString();
+                // formatted text - first name and last name
+                txFirstName.Text = person.FirstName;
+                txLastName.Text = person.LastName;
+            }
+        }
+
+        private void btAdd_Click(object sender, RoutedEventArgs e)
+        {
+            BudgetContext context = App.Context;
+            Person newPerson = new Person
+            {
+                Name = "",
+                FirstName = txFirstName.Text,
+                LastName = txLastName.Text
+            };
+            context.Persons.Add(newPerson);
+            context.SaveChanges();
+            dgPersons.ItemsSource = (from p in context.Persons
+                                     select new PersonDatagridViewModel(p)).ToList();
+            dgPersons.SelectedIndex = 0;
+        }
+
+        private void btUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            BudgetContext context = App.Context;
+            PersonDatagridViewModel person = (PersonDatagridViewModel)dgPersons.SelectedItem;
+            if (person != null)
+            {
+                Person updatePerson = context.Persons.Find(person.Id);
+                updatePerson.FirstName = txFirstName.Text;
+                updatePerson.LastName = txLastName.Text;
+                context.SaveChanges();
+                dgPersons.ItemsSource = (from p in context.Persons
+                                         select new PersonDatagridViewModel(p)).ToList();
+            }
+        }
+
+        private void btDelete_Click(object sender, RoutedEventArgs e)
+        {
+            BudgetContext context = App.Context;
+            PersonDatagridViewModel person = (PersonDatagridViewModel)dgPersons.SelectedItem;
+            if (person != null)
+            {
+                Person person1 = context.Persons.Find(person.Id);
+                MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this person?", "Delete Person", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
+                {
+                    context.Persons.Remove(person1);
+                    context.SaveChanges();
+                    dgPersons.ItemsSource = (from p in context.Persons
+                                             select new PersonDatagridViewModel(p)).ToList();
+                }
+            }
         }
     }
 }
