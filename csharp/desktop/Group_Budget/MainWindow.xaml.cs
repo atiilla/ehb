@@ -110,7 +110,9 @@ namespace Group_Budget
                 MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this person?", "Delete Person", MessageBoxButton.YesNo);
                 if (result == MessageBoxResult.Yes)
                 {
-                    context.Persons.Remove(person1);
+                    person1.Deleted = DateTime.Now;
+                    //context.Persons.Remove(person1); // avoid conflict in the database by removing the person1
+                    context.Persons.Update(person1);
                     context.SaveChanges();
                     dgPersons.ItemsSource = (from p in context.Persons
                                              select new PersonDatagridViewModel(p)).ToList();
