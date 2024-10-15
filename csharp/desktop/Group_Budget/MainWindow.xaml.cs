@@ -1,4 +1,5 @@
-﻿using Group_Budget.Models.ViewModels;
+﻿using Group_Budget.Migrations;
+using Group_Budget.Models.ViewModels;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -38,6 +39,21 @@ namespace Group_Budget
             dgPersons.Columns[3].Width = 150;
 
             dgPersons.UpdateLayout();
+
+            if(dgPersons.ItemsSource == null)
+            {
+                // init sample
+                dgPersons.ItemsSource = new List<PersonDatagridViewModel>
+                {
+                    new PersonDatagridViewModel(new Person { Id = 1, FirstName = "John", LastName = "Doe" }),
+                    new PersonDatagridViewModel(new Person { Id = 2, FirstName = "Jane", LastName = "Doe" }),
+                    new PersonDatagridViewModel(new Person { Id = 3, FirstName = "John", LastName = "Smith" })
+            };
+
+                dgPersons.SelectedIndex = 0;
+                dgPersons.UpdateLayout();
+
+            }
         }
 
         private void dgPersons_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
