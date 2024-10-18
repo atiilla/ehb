@@ -6,25 +6,32 @@
         xmlns:local="clr-namespace:GitRecon"
         mc:Ignorable="d"
         xmlns:res="clr-namespace:GitRecon.Resources"
-        Title="{x:Static res:Strings.AppTitle}" Height="366" Width="563">
+        Height="366" Width="563">
+    <Window.Title>
+        <MultiBinding StringFormat="{}{0} - {1}">
+            <Binding Source="{x:Static res:Strings.AppTitle}"/>
+            <Binding Source="{x:Static res:Strings.Github}"/>
+        </MultiBinding>
+    </Window.Title>
     <Window.Resources>
         <ResourceDictionary Source="Resources/Styles.xaml"/>
     </Window.Resources>
     <Grid x:Name="MainGrid" Margin="0,0,126,0">
         <TabControl x:Name="MainApp" Margin="0,0,-125,0">
+
+            <!-- Gitrecon -->
             <TabItem Header="GitRecon">
                 <TabControl x:Name="MainTab" Margin="0,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-
                     <!-- First Tab: Query by Username and find Exposed emails -->
                     <TabItem Header="{x:Static res:Strings.TabMenu1}">
                         <Grid Background="#FFE5E5E5">
 
-                            <TextBox Style="{StaticResource txtInputStyle}" x:Name="txUsername" Margin="10,7,0,0" Text="Enter a username"/>
+                            <TextBox Style="{StaticResource txtInputStyle}" x:Name="txUsername" Margin="10,5,0,0" Padding="3,2,3,2" Text="Enter a username" GotFocus="OnFocusInput" />
 
-                            <Button Style="{StaticResource btnPrimaryStyle}" Content="Query" x:Name="btnEmailQuery" Margin="197,6,0,0" Padding="3,2,3,2" Click="btnEmailQuery_Click" FontWeight="Normal"/>
+                            <Button Style="{StaticResource btnPrimaryStyle}" Content="Query" x:Name="btnEmailQuery" Margin="197,5,0,0" Padding="3,2,3,2" Click="btnEmailQuery_Click" />
 
                             <!-- Token Input Label -->
-                            <TextBlock Style="{StaticResource tbStatusLabelStyle}" Margin="10,33,0,0" Text="API Token:"/>
+                            <TextBlock Style="{StaticResource lbApiToken}" Margin="10,33,0,0" Text="API Token:"/>
                             <TextBox Style="{StaticResource txtInputStyle}" x:Name="txToken" Margin="75,33,0,0" Width="200"/>
 
                             <!-- CheckBox for Ignore forks -->
@@ -47,13 +54,16 @@
                     <TabItem Header="{x:Static res:Strings.TabMenu2}">
                         <Grid Background="#FFE5E5E5">
 
-                            <TextBox Style="{StaticResource txtInputStyle}" x:Name="txEmail" Margin="10,7,0,0" Text="Enter an email"/>
+                            <TextBox Style="{StaticResource txtInputStyle}" x:Name="txEmail" Margin="10,5,0,0" Padding="3,2,3,2" Text="Enter an email" GotFocus="OnFocusInput" />
 
-                            <Button Style="{StaticResource btnPrimaryStyle}" Content="Query" x:Name="btnUsernameQuery" Margin="197,7,0,0" Click="btnUsernameQuery_Click"/>
+                            <Button Style="{StaticResource btnPrimaryStyle}" Content="Query" x:Name="btnUsernameQuery" Margin="197,5,0,0" Padding="3,2,3,2" Click="btnUsernameQuery_Click"/>
 
-                            <TextBlock Style="{StaticResource tbStatusLabelStyle}" Margin="10,33,0,0" Text="API Token:"/>
+                            <DataGrid x:Name="ResultUsernames" Margin="10,60,10,39" AutoGenerateColumns="False">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Username" Binding="{Binding Username}" />
+                                </DataGrid.Columns>
+                            </DataGrid>
 
-                            <DataGrid Style="{StaticResource dataGridStyle}" x:Name="ResultUsernames" Margin="10,60,10,39"/>
 
                             <TextBlock Style="{StaticResource tbStatusLabelStyle}" x:Name="UsernameStatusTextBlock" Margin="10,250,0,0" Text="Status..."/>
                         </Grid>
@@ -61,39 +71,79 @@
 
                 </TabControl>
             </TabItem>
+            
+            <!-- End Gitrecon -->
+
+            <!-- Social Account Finder -->
             <TabItem Header="Social Account Finder">
                 <Grid>
-                    <StackPanel Margin="5">
-                        <!-- Username input field -->
-                        <TextBox x:Name="UsernameInput" Text="Enter a username..." Style="{StaticResource txtInputStyle}" Margin="5" HorizontalAlignment="Center" TextAlignment="Center"/>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-                        <!-- Search button -->
-                        <Button x:Name="SearchButton" Content="Search" Width="100" Height="30" Margin="5" HorizontalAlignment="Center" Click="SearchButton_Click" />
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBox x:Name="UsernameInput" Text="Enter a username..." Style="{StaticResource txtSocialInput}" GotFocus="OnFocusInput" />
 
-                        <!-- DataGrid to display results -->
-                        <DataGrid x:Name="SocialMediaResults" AutoGenerateColumns="False" Height="170" Margin="10,0,10,10" IsReadOnly="True">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Profile URL" Binding="{Binding ProfileUrl}" Width="300"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                        <Grid Margin="5">
-                            <!-- Define two columns: one for status (left) and one for export button (right) -->
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <!-- Left column (status) will take available space -->
-                                <ColumnDefinition Width="Auto" />
-                                <!-- Right column (button) will take auto space -->
-                            </Grid.ColumnDefinitions>
-
-                            <!-- Status TextBlock aligned to the left -->
-                            <TextBlock Style="{StaticResource tbStatusLabelStyle}" x:Name="SocialAccountResult" Margin="10,0,0,0" Text="Status..." HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0"/>
-
-                            <!-- Export Button aligned to the right -->
-                            <Button x:Name="btnSocialExport" Style="{StaticResource btnSaveAs}" Content="Export" Width="100" Height="30" Margin="5,0,10,0" HorizontalAlignment="Right" Click="btnSocialFinderExport_Click" Grid.Column="1"/>
-                        </Grid>
+                        <Button x:Name="SearchButton" Content="Search"  Click="SearchButton_Click" Style="{StaticResource btnSocialQuery}"/>
                     </StackPanel>
+
+                    <DataGrid x:Name="SocialMediaResults" AutoGenerateColumns="False" Margin="10,0,10,10" IsReadOnly="True" VerticalAlignment="Stretch" Grid.Row="1">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Profile URL" Binding="{Binding ProfileUrl}" Width="300"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Grid Margin="5" Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Style="{StaticResource tbStatusLabelStyle}" x:Name="SocialAccountResult" Margin="10,0,0,0" Text="Status..." HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0"/>
+
+                        <Button x:Name="btnSocialExport" Style="{StaticResource btnSaveAs}" Content="Export" Width="100" Height="30" Margin="5,0,10,0" HorizontalAlignment="Right" Click="btnSocialFinderExport_Click" Grid.Column="1"/>
+                    </Grid>
                 </Grid>
             </TabItem>
+            <!-- End Social Account Finder -->
+
+            <!-- Subdomain Finder -->
+            <TabItem Header="Subdomain Finder">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                       <TextBox x:Name="DomainInput" Text="domain.com" Style="{StaticResource txtSocialInput}" GotFocus="OnFocusInput" />
+
+                        <Button x:Name="DomainSearchBtn" Content="Search"  Click="DomainSearchBtn_Click" Style="{StaticResource btnSocialQuery}"/>
+                    </StackPanel>
+
+                    <DataGrid x:Name="SubDomainResults" AutoGenerateColumns="False" Margin="10,0,10,10" IsReadOnly="True" VerticalAlignment="Stretch" Grid.Row="1">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Subdomain URL" Binding="{Binding Subdomain}" Width="300"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Grid Margin="5" Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Style="{StaticResource tbStatusLabelStyle}" x:Name="Subdomainresult" Margin="10,0,0,0" Text="Status..." HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0"/>
+
+                        <Button x:Name="btnSubdomainsExport" Style="{StaticResource btnSaveAs}" Content="Export" Width="100" Height="30" Margin="5,0,10,0" HorizontalAlignment="Right" Click="btnSubdomainExport_Click" Grid.Column="1"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <!-- End Subdomain Finder -->
         </TabControl>
         
     </Grid>
