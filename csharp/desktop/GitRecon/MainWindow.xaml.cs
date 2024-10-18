@@ -6,29 +6,30 @@ using System.Windows.Input;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using GitRecon.Models;
 
 namespace GitRecon
 {
     public partial class MainWindow : Window
     {
 
-        public class AccountResult
-        {
-            public string Network { get; set; }
-            public string ProfileUrl { get; set; }
-        }
+        //public class AccountResult
+        //{
+        //    public string Network { get; set; }
+        //    public string ProfileUrl { get; set; }
+        //}
 
-        public class WebsiteInfo
-        {
-            public string ErrorType { get; set; }
-            public string ErrorMessage { get; set; }
-            public string Url { get; set; }
-        }
+        //public class WebsiteInfo
+        //{
+        //    public string ErrorType { get; set; }
+        //    public string ErrorMessage { get; set; }
+        //    public string Url { get; set; }
+        //}
 
-        public class SocialAccount
-        {
-            public string ProfileUrl { get; set; }
-        }
+        //public class SocialAccount
+        //{
+        //    public string ProfileUrl { get; set; }
+        //}
 
 
         private const string API_URL = "https://api.github.com";
@@ -247,8 +248,6 @@ namespace GitRecon
         }
 
         // End of Social Account Finder
-
-
 
 
         public MainWindow()
