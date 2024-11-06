@@ -30,20 +30,20 @@ namespace Group_Budget
                 context.SaveChangesAsync();
             }
 
-            if (!context.PersonProjects.Any())
-            {
-                var firstProject = context.Projects.FirstOrDefault();
-                if (firstProject != null)
-                {
-                    int projectId = firstProject.Id;
-                    context.PersonProjects.AddRange(
-                        new PeopleProjects { PersonId = 1, ProjectId = projectId },
-                        new PeopleProjects { PersonId = 2, ProjectId = projectId },
-                        new PeopleProjects { PersonId = 1, ProjectId = projectId }
-                    );
-                    context.SaveChanges();
-                }
-            }
+            //if (!context.PersonProjects.Any())
+            //{
+            //    var firstProject = context.Projects.FirstOrDefault();
+            //    if (firstProject != null)
+            //    {
+            //        int projectId = firstProject.Id;
+            //        context.PersonProjects.AddRange(
+            //            new PeopleProjects { PersonId = 1, ProjectId = projectId },
+            //            new PeopleProjects { PersonId = 2, ProjectId = projectId },
+            //            new PeopleProjects { PersonId = 1, ProjectId = projectId }
+            //        );
+            //        context.SaveChanges();
+            //    }
+            //}
 
             if (!context.Budgets.Any())
             {

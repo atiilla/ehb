@@ -33,6 +33,7 @@ namespace GitRecon
             InitializeComponent();
         }
 
+<<<<<<< HEAD
         // Event handler for querying by email
         private async void btnUsernameQuery_Click(object sender, RoutedEventArgs e)
         {
@@ -139,6 +140,20 @@ namespace GitRecon
                     System.Threading.Thread.Sleep(100); // Delay between retries
                 }
             }
+=======
+        private void queryFindEmail(object sender, RoutedEventArgs e)
+        {
+            // testing clickhandler and button
+            MessageBox.Show("Button clicked");
+            string username = txUsername.Text;
+            MessageBox.Show(username);
+        }
+
+        private void queryFindUsername(object sender, RoutedEventArgs e)
+        {
+            // testin method for button click
+            MessageBox.Show("Button clicked");
+>>>>>>> 3447dd6bd0b5ab2d812ce02b93046512eca0e66f
         }
     }
 }

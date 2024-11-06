@@ -21,7 +21,7 @@
         <TabItem Header="People" x:Name="tiPeople">
             <Grid Background="#FFE5E5E5" Height="542">
                 <StackPanel Orientation="Vertical" Margin="1">
-
+                    <TextBox x:Name="txSearch" Text="Search..." Margin="10,10,0,0" Grid.Column="0" Style="{StaticResource txSearch}" MouseEnter="txSearch_Enter" MouseLeave="txSearch_Leave" TextChanged="txSearch_TextChanged"/>
                     <!-- DataGrid for displaying the list of people -->
                     <Grid Margin="1">
     <Grid.ColumnDefinitions>
@@ -37,6 +37,7 @@
                                 <!-- Right column for the form and buttons -->
                             </Grid.ColumnDefinitions>
 
+                            
                             <!-- DataGrid on the left side -->
                             <DataGrid x:Name="dgPersons"
               MouseLeftButtonUp="dgPersons_MouseLeftButtonUp"
@@ -85,7 +86,23 @@
         </TabItem>
 
         <TabItem Header="Projects" x:Name="tiProjects">
-            <Grid Background="#FFE5E5E5"/>
+            <Grid Background="#FFE5E5E5" Height="542">
+                <StackPanel Orientation="Vertical" Margin="1">
+                    <!-- DataGrid for displaying the list of projects -->
+                    <DataGrid x:Name="dgProjects" AutoGenerateColumns="True" />
+                    <Grid Margin="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <!-- Left column for DataGrid -->
+                            <ColumnDefinition Width="Auto" />
+                            <!-- Right column for the form and buttons -->
+                        </Grid.ColumnDefinitions>
+                        
+                        <!-- GroupBox for displaying selected project's details -->
+
+                    </Grid>
+                </StackPanel>
+            </Grid>
         </TabItem>
         <TabItem Header="Budget" x:Name="tiBudget">
             <Grid Background="#FFE5E5E5"/>

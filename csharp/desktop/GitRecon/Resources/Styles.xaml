@@ -86,4 +86,41 @@
 
     </Style>
 
+<<<<<<< HEAD
 </ResourceDictionary>
+=======
+    <Style TargetType="DataGrid" x:Key="dgStyle">
+
+        <Setter Property="FontSize" Value="17"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="SelectionMode" Value="Single"/>
+        <Setter Property="AutoGenerateColumns" Value="False"/>
+        <Setter Property="Width" Value="auto"/>
+    </Style>
+
+    <Style TargetType="GroupBox" x:Key="gbStyle">
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="Width" Value="240"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+    </Style>
+
+    <Style TargetType="Button" x:Key="btnQuery">
+        <Setter Property="FontSize" Value="20"/>
+    </Style>
+
+    <Style TargetType="TextBox" x:Key="txEmail">
+        <Setter Property="FontSize" Value="20"/>
+    </Style>
+
+    <Style TargetType="TextBox" x:Key="txResults">
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="Width" Value="520"/>
+        <Setter Property="Padding" Value="7"/>
+        <Setter Property="Height" Value="200"/>
+        <Setter Property="Background" Value="LightGray"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+    </Style>
+</ResourceDictionary>
+>>>>>>> 3447dd6bd0b5ab2d812ce02b93046512eca0e66f
