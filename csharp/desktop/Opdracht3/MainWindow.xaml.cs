@@ -9,7 +9,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace GitRecon
+namespace Opdracht3
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -21,18 +21,10 @@ namespace GitRecon
             InitializeComponent();
         }
 
-        private void queryFindEmail(object sender, RoutedEventArgs e)
+        private void InitializeComponent()
         {
-            // testing clickhandler and button
-            MessageBox.Show("Button clicked");
-            string username = txUsername.Text;
-            MessageBox.Show(username);
-        }
-
-        private void queryFindUsername(object sender, RoutedEventArgs e)
-        {
-            // testin method for button click
-            MessageBox.Show("Button clicked");
+            // This method is usually auto-generated in the MainWindow.g.i.cs file.
+            // Ensure that the XAML file is correctly associated with this class.
         }
     }
 }

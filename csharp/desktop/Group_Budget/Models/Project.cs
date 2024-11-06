@@ -20,10 +20,9 @@ namespace Group_Budget.Models
         [ForeignKey("Category")]
         public int CategoryId { get; set; }
 
-        [ForeignKey("Person")]
-        public List<int> PersonId { get; set; }
-
         public Category Category { get; set; }
+
+        // Many-to-many relationship with People
         public List<Person> People { get; set; }
 
 

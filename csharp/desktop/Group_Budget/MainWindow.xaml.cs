@@ -1,5 +1,6 @@
 ﻿using Group_Budget.Migrations;
 using Group_Budget.Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,15 +19,43 @@ namespace Group_Budget
     /// </summary>
     public partial class MainWindow : Window
     {
+        private List<Person> peopleList;
         public MainWindow()
         {
             BudgetContext context = App.Context;
             InitializeComponent();
+
+            //peopleList = context.Persons.ToList(); // Initialize peopleList with the list of persons from the context
+            
             //dgPersons.ItemsSource = context.Persons.ToList();
             //dgPersons.ItemsSource = context.Persons.Where(p => p.Deleted > DateTime.Now).ToList();
             dgPersons.ItemsSource = (from p in context.Persons
                                      where p.Deleted > DateTime.Now
                                      select new PersonDatagridViewModel(p)).ToList(); // Fix the LINQ query and add ToList()
+
+            dgProjects.ItemsSource = context.Projects
+         .Include(p => p.Category)
+         .Include(p => p.People)  // Load related people
+         .Select(p => new
+         {
+             p.Id,
+             p.Name,
+             p.Description,
+             p.StartDate,
+             p.EndDate,
+             p.EstimatedBudget,
+             CategoryName = p.Category.Name,  // Display the category name
+             // Use PersonId to find names from the Person table
+             PeopleNames = string.Join(", ",
+                 context.Persons.Select(pp => new { pp.Id, pp.FirstName, pp.LastName })
+                 .Where(pp => p.People.Any(ppp => ppp.Id == pp.Id))
+                 .Select(pp => $"{pp.FirstName} {pp.LastName}")
+                 )
+
+         })
+         .ToList();
+
+
 
             // columnWidth
             //dgPersons.Width = context.Persons.Count() * 100; // 100 is the width of each column
@@ -123,5 +152,43 @@ namespace Group_Budget
                 }
             }
         }
+
+        private void txSearch_Enter(object sender, RoutedEventArgs e)
+        {
+            txSearch.Text = "";
+        }
+
+        private void txSearch_Leave(object sender, RoutedEventArgs e)
+        {
+            if (txSearch.Text == "")
+            {
+                txSearch.Text = "Search";
+            }
+        }
+
+
+
+
+
+        private void txSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (App.Context == null || App.Context.Persons == null || dgPersons == null)
+            {
+                // Handle the null case appropriately, e.g., show an error message or log the issue
+                return;
+            }
+
+            string searchText = txSearch.Text.ToLower(); // Get the search text and convert it to lowercase for case-insensitive search
+
+            dgPersons.ItemsSource = (from p in App.Context.Persons
+                                     where p.Deleted > DateTime.Now &&
+                                     (p.FirstName.ToLower().Contains(searchText) || p.LastName.ToLower().Contains(searchText))
+                                     select new PersonDatagridViewModel(p)).ToList(); // Fix the LINQ query and add ToList()
+
+            dgPersons.SelectedIndex = 0;
+            dgPersons.UpdateLayout();
+        }
+
+
     }
 }

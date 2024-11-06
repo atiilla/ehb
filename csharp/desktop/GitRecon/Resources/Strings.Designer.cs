@@ -61,7 +61,7 @@ namespace GitRecon.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to GitRecon.
+        ///   Looks up a localized string similar to OSINT Tools.
         /// </summary>
         public static string AppTitle {
             get {
