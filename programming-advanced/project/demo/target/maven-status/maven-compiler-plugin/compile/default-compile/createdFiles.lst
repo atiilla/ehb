@@ -1,0 +1,5 @@
+com\example\CLI.class
+com\example\DockerManager.class
+com\example\App.class
+com\example\ServiceInfo.class
+com\example\ServiceManager.class
